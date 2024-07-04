@@ -78,18 +78,15 @@ def fetch_top_colors(req):
                 
                 img_colors = list(img_obj.getdata())
                 check_clr = {}
-                #color = []
+                color = []
                 if img_obj.mode=='L':
                     return render(req, 'color_info.html',{'form':form,'msg':"The image is Grayscale."})
-                colors = defaultdict(int)
                 for clr in img_colors:
-                    #color.append(tuple(close_color(clr[:3])))
-                    color = close_color(clr[:3])
-                    colors[color]+=1
-                #colors = defaultdict(int)
+                    color.append(tuple(close_color(clr[:3])))
+                colors = defaultdict(int)
                 
-                # for clr in color :
-                #     colors[clr]+=1
+                for clr in color :
+                    colors[clr]+=1
                 colors = dict(sorted(colors.items(), key = lambda item: item[1], reverse=True))
                 
             
