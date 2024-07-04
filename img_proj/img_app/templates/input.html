@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+    <head>
+        <title></title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+        <style>
+            .drp_dn{
+                display:none
+            }
+        </style>
+    </head>
+    <body>
+        <form ation = "." method="post" enctype="multipart/form-data">
+            {% csrf_token%}
+           <div class="container-fluid pt-2 mt-5">
+                <div class = "card-body"> 
+                    <div class="text-primary"> 
+                        <center>
+                            <div><label><strong><i>Upload Image</i></strong></label></br>
+                                
+                            </div>
+                            <div style = "margin-left: 50px" class = "p-4">
+                                {{form.img}}
+                            </div>
+    
+                        </center>
+                    </div>
+                    <div class="text-primary drp_dn" > 
+                        <center>
+                            <div><label><strong><i>Choose the no. of colors to show</i></strong></label></br>
+                                
+                            </div>
+                            <div style = "margin-left: 50px" class = "p-4">
+                                {{form.drop_down}}
+                            </div>
+    
+                        </center>
+                    </div>
+               
+
+                        <center>
+                            <button type="submit" name = "submit" class=" btn btn-lg btn-success">
+                                Upload
+                            </button>
+                        </center>  
+                </div>
+                
+            </div>
+            
+        </form>
+
+
+        {%if image%}
+        <div class = "container-fluid mt-5 pt-5">
+            <center>
+                <label><strong><i>Uploaded Image</i></strong></label>
+            </center>
+           
+            <img src="{{image.img.url}}" alt="{{images.img.url}}" class="img-thumbnail mx-auto d-block img-fluid">
+        </br>
+            <table border="1" class="table table-striped table-bordered table-dark table-hover">
+                <thead>
+                    <tr>
+                        <th><strong><i>Property</i></strong></th>
+                        <th><strong><i>Value</i></strong></th>
+                    </tr>
+                </thead>
+               <tbody>
+                <tr>
+                    <td><strong>Width</strong></td>
+                    <td>{{width}} Pixels</td>
+                </tr>
+                <tr>
+                    <td><strong>Height</strong></td>
+                    <td>{{height}} Pixels</td>
+                </tr>
+                <tr>
+                    <td><strong>Format</strong></td>
+                    <td>{{img_format}}</td>
+                </tr>
+                <tr>
+                    <td><strong>Type</strong></td>
+                    <td>{{img_type}}</td>
+                </tr>
+                <tr>
+                    <td><strong>Size in Bytes</strong></td>
+                    <td>{{size_bytes}} Bytes</td>
+                </tr>
+                <tr>
+                    <td><strong>Size in KB</strong></td>
+                    <td>{{size_kb}} KB</td>
+                </tr>
+               </tbody>
+                
+            </table>
+        </div>
+        {%endif%}
+        <!-- {% for x in images%}
+            <img src = "{{x.img.url}}" >
+        {% endfor %} -->
+    </body>
+</html>
