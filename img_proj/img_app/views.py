@@ -271,19 +271,19 @@ def get_shade_count(color_key, color, count_map, shade_map):
     count_map[color_key] = dict(shade_map)
     return count_map
 
-def get_nearest_color(color):
+# def get_nearest_color(color):
 
-    color = colorsys.rgb_to_hsv(color[0], color[1], color[2])
-    color = np.array(color)
-    min_dist = float('inf')
-    close_clr = None
-    for clr, shades in color_shades.items():
-        shades = np.array(shades)
-        dist =  np.argmin(np.sqrt(np.sum((shades - color)**2, axis = 1)))
-        if dist<min_dist:
-            min_dist = dist
-            close_clr = clr
-    return close_clr
+#     color = colorsys.rgb_to_hsv(color[0], color[1], color[2])
+#     color = np.array(color)
+#     min_dist = float('inf')
+#     close_clr = None
+#     for clr, shades in color_shades.items():
+#         shades = np.array(shades)
+#         dist =  np.argmin(np.sqrt(np.sum((shades - color)**2, axis = 1)))
+#         if dist<min_dist:
+#             min_dist = dist
+#             close_clr = clr
+#     return close_clr
 
 def get_shades(color, count_map):
     color = colorsys.rgb_to_hsv(color[0], color[1], color[2])
@@ -312,7 +312,7 @@ def get_color_shades(req):
             k = req.POST['drop_down']
             img_path = img_file
             with Image.open(img_path) as img_obj:
-                print("Inside image\n")
+                
                 img_colors = list(img_obj.getdata())
                 
                 color = []
@@ -331,28 +331,30 @@ def get_color_shades(req):
                 
                 for key,val in count_map.items():
                     val = list(np.round((np.array(val)/total)*100,4))
-                    count_map[key]=val
+                    count_map[key] = val
                 
                 
-                for clr, shades in color_shades.items():
-                    color_shades[clr] = [convert_hsv_to_rgb(shade) for shade in shades]
+                
                 color_dict = {}
-                for key in color_shades:
-                    rgb_lst = color_shades[key]
+                for key in color_shades_rgb:
+                    rgb_lst = color_shades_rgb[key]
                     perc_lst = count_map[key]
                     rgb_lst = [get_color(clr) for clr in rgb_lst]
-                    lst = [(rgb, perc) for rgb, perc in zip(rgb_lst, perc_lst)]
+                    lst = sorted([(rgb, perc) for rgb, perc in zip(rgb_lst, perc_lst)], key = lambda item: item[1], reverse=True)
                     color_dict[key] = lst
                 
+                perc_dict = {key: sum(per for _,per in val) for key, val in color_dict.items()}
+                perc_dict = sorted(perc_dict.items(), key = lambda item: item[1], reverse=True)
+                res= {}
+                for clr,_ in perc_dict:
+                    res[clr] = color_dict[clr]
+                k = min(len(res), int(k))
+                res = dict(list(res.items())[:k])
                 
-
-                k = min(len(count_map), int(k))
-                color_dict = dict(list(color_dict.items())[:k])
-                print(f"color_dict: {color_dict}\n")
                 context = {
                     'form': form,
                     'image': image,
-                    'top_colors': color_dict
+                    'top_colors': res
                 }
             return render(req, 'show_color_shades.html',context)
     else:
