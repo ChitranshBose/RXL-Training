@@ -85,17 +85,13 @@
         <img src="{{image.img.url}}" class="img-thumbnail mx-auto d-block img-fluid">
         </br>
     
-        {% for color, lst in top_colors.items %}
-            <div class="color-strip">
-                {% for  clr, perc in lst %}
-                <div class="color-shade" style="background-color: {{clr}};">
-                    {{perc}}
-                </div>
-                {% endfor %}
-            </div>
+    <div class="color-strip">
+        {% for  clr, perc in top_colors.items %}
+        <div class="color-shade" style="background-color: {{clr}};">
+            {{perc}}%
+        </div>
         {% endfor %}
-    
-    
+    </div>
     {%else%}
         <div class="text-danger">
             <center>

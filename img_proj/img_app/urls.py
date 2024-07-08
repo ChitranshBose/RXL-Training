@@ -7,7 +7,7 @@ from django.conf.urls.static import static
 
 urlpatterns = [
                 path('upload/', views.upload_img_info, name='upload'),
-                path('color/', views.get_color_shades, name='color'),
+                path('color/', views.fetch_colors, name='color'),
             ]  
 
 if settings.DEBUG:
