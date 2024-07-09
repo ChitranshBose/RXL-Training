@@ -1,12 +1,11 @@
-import colorsys
-from skimage.color import rgb2lab, lab2rgb
+from skimage.color import rgb2lab
 import numpy as np
-from skimage.color import deltaE_ciede94, deltaE_ciede2000, deltaE_cie76, deltaE_cmc
+# from skimage.color import deltaE_cie76
 
 color_map = { 
     'Dark Red':(255,0,0),
     'Light Red':(255,102,102),
-    'Dark Green':(0,153,0),
+    'Dark Green':(0,102,51),
     'Light Green':(51,255,51),
     'Dark Blue':(0,0,204),
     'Light Blue':(51,153,255),
@@ -25,17 +24,27 @@ color_map = {
     'Maroon':(128,0,0),
     'Cyan':(0,255,255),
     'Magenta':(255,0,0),
-    'Teal':(0,153,153)
+    'Teal':(0,153,153),
+    'Skin':(255,204,153),
+    'Cream':(255,229,204),
+    'Light Orange':(255,178,102),
+    'Parrot Green':(0,153,0)
 }
-def convert_rgb_to_lab(color):
-    #return rgb2lab(np.reshape(color,(1,1,3)))[0][0]
-    return rgb2lab(np.array(np.ones((1, 1, 3)) * color/255))
 
-color_map_lab = {}
-for key, val in color_map.items():
-    val = convert_rgb_to_lab(val)
-    color_map_lab[key] = val
 
-def cie76(c1, c2):
-    #return np.sqrt(np.sum(c1-c2)**2)
-    return deltaE_cie76(c1,c2)
+# def convert_rgb_to_lab(color):
+    
+#     return rgb2lab(np.array(np.ones((1, 1, 3)) * color/255))
+
+# color_map_lab = {}
+# for key, val in color_map.items():
+#     # val = convert_rgb_to_lab(val)
+#     color_map_lab[key] = rgb2lab(np.array(np.ones((1, 1, 3)) * val/255))
+
+
+# def cie76(c1, c2):
+#     return np.linalg.norm(np.array(c1)-np.array(c2))
+    #return deltaE_cie76(c1,c2)
+
+# for key, val in color_map_lab.items():
+#     print(f"'{key}':{val}")

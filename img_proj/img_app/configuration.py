@@ -46,3 +46,9 @@ color_list = [(204, 0, 0), (255, 0, 0), (255, 51, 51), (255,102,102), (255,153,1
     ]
 
 color_list_labspace = [convert_rgb_to_lab(clr) for clr in color_list]
+
+
+
+
+
+

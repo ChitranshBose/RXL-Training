@@ -22,7 +22,7 @@
             align-items: center;
         }
         .color-shade{
-            width: 100px;
+            /* width: 10%; */
             height: 50px;
             display: flex;
             align-items: center;
@@ -87,7 +87,7 @@
     
     <div class="color-strip">
         {% for  clr, perc in top_colors.items %}
-        <div class="color-shade" style="background-color: {{clr}};">
+        <div class="color-shade" style="width: {{perc}}%;background-color: {{clr}};">
             {{perc}}%
         </div>
         {% endfor %}
