@@ -20,6 +20,7 @@
             display: flex;
             margin-bottom: 20px;
             align-items: center;
+            flex-wrap: wrap;
         }
         .color-shade{
             /* width: 10%; */
@@ -31,6 +32,14 @@
             font-weight: bold;
             text-shadow: 1px 1px 2px black;
             margin-right: 5px;
+            word-wrap: break-word;
+            white-space: nnormalowrap;
+            overflow: hidden;
+        }
+        .color-shade.verticle-text{
+            writing-mode: vertical-rl;
+            white-space: normal;
+            text-align: center;
         }
     </style>
 </head>
@@ -87,7 +96,7 @@
     
     <div class="color-strip">
         {% for  clr, perc in top_colors.items %}
-        <div class="color-shade" style="width: {{perc}}%;background-color: {{clr}};">
+        <div class="color-shade {% if perc < 10 %} verticle-text {% endif %}" style="width: {{perc}}%;background-color: {{clr}};">
             {{perc}}%
         </div>
         {% endfor %}

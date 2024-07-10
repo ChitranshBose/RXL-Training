@@ -154,6 +154,7 @@ def mul(a,b):
         b>>=1
     return ans
 def rgb_to_lab(color):
+   
     num = 0
     rgb = [0,0,0]
     for clr in color:
@@ -168,6 +169,7 @@ def rgb_to_lab(color):
     x  = rgb[0]*0.4124 + rgb[1]*0.3576 +rgb[2]*0.1805
     y  = rgb[0]*0.2126 + rgb[1]*0.7152 +rgb[2]*0.0722
     z  = rgb[0]*0.0193 + rgb[1]*0.1192 +rgb[2]*0.9505
+    
 
     xyz[0] = round(x,4)
     xyz[1] = round(y,4)
@@ -176,7 +178,6 @@ def rgb_to_lab(color):
     xyz[0] = float(xyz[0])/95.047
     xyz[1] = float(xyz[1])/100.0
     xyz[2] = float(xyz[2])/108.883
-
     num = 0
     for clr in xyz:
         if clr>0.008856:
@@ -193,6 +194,23 @@ def rgb_to_lab(color):
     lab[1] = round(a,4)
     lab[2] = round(b,4)
 
+    # color = np.array(color)/255.0
+    # val = color > 0.04045
+    # color[val] = ((color[val] + 0.055)/1.055)**2.4
+    # color[~val]/=12.92 
+    # color*=100
+    # weights = [[0.4124, 0.3576, 0.1805],
+    #            [0.2126, 0.7152, 0.0722],
+    #            [0.0193, 0.1192, 0.9505]]
+    # xyz = np.dot(color,weights)
+    # xyz/= [95.047, 100.0, 108.883]
+    # val = xyz > 0.008856
+    # xyz[val] = xyz[val] ** (1/3)
+    # xyz[~val] = (7.787*xyz[~val]) + (16/116)
+    # lab = np.zeros_like(xyz)
+    # lab[0] = (116*xyz[1])-16
+    # lab[1] = 500*(xyz[0]-xyz[1])
+    # lab[2] = 200*(xyz[1]-xyz[2])
     return lab
 
 def fetch_colors(req):
@@ -225,20 +243,28 @@ def fetch_colors(req):
                     return render(req, 'show_color_shades.html',{'form':form,'msg':"The image is Grayscale."})
                 
                 #img_colors = [rgb2lab(np.array(np.ones((1, 1, 3)) * (clr[:3]))/255) for clr in img_colors]
-                no_of_pix = len({clr for clr in img_colors})
-                print(f"no_of_pix: {no_of_pix}")
-                img_colors = [rgb_to_lab(clr[:3]) for clr in img_colors]
+                lookup_lab_color = defaultdict()
                 
+                #img_colors_lab = [rgb_to_lab(clr[:3]) for clr in img_colors]
+                lab_st = t.time()
+                img_colors_lab = []
+                for clr in img_colors:
+                    if tuple(clr[:3]) in lookup_lab_color:
+                        val = lookup_lab_color[tuple(clr[:3])]
+                    else:
+                        val = rgb_to_lab(clr[:3])
+                        lookup_lab_color[tuple(clr[:3])] = val 
+                    #if all(cdist([val],[lab], metric = 'cityblock') > 10 for lab in val_colors):
+                    img_colors_lab.append(val)
+                #img_colors_lab = np.array(img_colors_lab)
+                lab_en = t.time()
+                print(f"\nlab_time: {lab_en-lab_st}\n")
+
                 lookup = defaultdict(int)
-
-
                 count_map = defaultdict(int)
                 
-                for clr in img_colors:
+                for clr in img_colors_lab:
                     #count_map = fetch_color_name(clr, count_map, color_map_lab)
-                    #dist = [np.linalg.norm(val_colors-np.array(clr))]
-                    #dist = [np.dot(val_colors, np.array(clr))/(np.linalg.norm(val_colors)*np.linalg.norm(clr))]
-                    # dist = [ciede2000(clr, color)['delta_E_00'] for _,color in color_map_lab.items()]
                     if tuple(clr) in lookup:
                         dist = lookup[tuple(clr)]
                     else:
