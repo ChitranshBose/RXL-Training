@@ -242,10 +242,10 @@ def fetch_colors(req):
                 if img_obj.mode=='L':
                     return render(req, 'show_color_shades.html',{'form':form,'msg':"The image is Grayscale."})
                 
-                #img_colors = [rgb2lab(np.array(np.ones((1, 1, 3)) * (clr[:3]))/255) for clr in img_colors]
+                
                 lookup_lab_color = defaultdict()
                 
-                #img_colors_lab = [rgb_to_lab(clr[:3]) for clr in img_colors]
+               
                 lab_st = t.time()
                 img_colors_lab = []
                 for clr in img_colors:
@@ -254,9 +254,9 @@ def fetch_colors(req):
                     else:
                         val = rgb_to_lab(clr[:3])
                         lookup_lab_color[tuple(clr[:3])] = val 
-                    #if all(cdist([val],[lab], metric = 'cityblock') > 10 for lab in val_colors):
+                    
                     img_colors_lab.append(val)
-                #img_colors_lab = np.array(img_colors_lab)
+                
                 lab_en = t.time()
                 print(f"\nlab_time: {lab_en-lab_st}\n")
 
