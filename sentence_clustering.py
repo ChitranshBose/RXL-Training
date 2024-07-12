@@ -167,11 +167,11 @@ if __name__== "__main__":
     
         final_output = [data for data in lst_data if data['text'] in final_sentences]
     
-        obj = json.dumps(final_sentences_map, indent = 4)
+        obj = json.dumps(final_sentences_map)
         with open(inp_dir+"sentence_mapping.jsonl",'w') as f:
             f.write(obj)    
     
-        obj = json.dumps(final_output, indent = 1)
+        obj = json.dumps(final_output)
         with open(inp_dir+"final_sentences.jsonl",'w') as f:
             f.write(obj)   
         print("Files created")
